@@ -26,8 +26,7 @@ pause() {
 # 说明
 echo
 echo -e "$yellow此脚本仅兼容于Debian 10+系统. 如果你的系统不符合,请Ctrl+C退出脚本$none"
-echo -e "可以去 ${cyan}https://github.com/crazypeace/naive${none} 查看脚本整体思路和关键命令, 以便针对你自己的系统做出调整."
-echo -e "有问题加群 ${cyan}https://t.me/+ISuvkzFGZPBhMzE1${none}"
+echo -e "可以查看脚本整体思路和关键命令, 以便针对你自己的系统做出调整."
 echo "本脚本支持带参数执行, 在参数中输入域名, 网络栈, 端口, 用户名, 密码. 详见GitHub."
 echo "----------------------------------------------------------------"
 
@@ -154,7 +153,7 @@ if [[ "$not_rebuild" == [yY] ]]; then
     cd /tmp
     rm caddy-forwardproxy-naive.tar.xz
     rm -r caddy-forwardproxy-naive
-    wget https://github.com/klzgrad/forwardproxy/releases/download/v2.7.5-caddy2-naive2/caddy-forwardproxy-naive.tar.xz
+    wget https://github.com/klzgrad/forwardproxy/releases/download/v2.9.1-naive/caddy-forwardproxy-naive.tar.xz
     tar -xf caddy-forwardproxy-naive.tar.xz
     cd caddy-forwardproxy-naive
     ./caddy version
@@ -163,7 +162,7 @@ elif [[ "$not_rebuild" == [nN] ]]; then
     echo -e "$yellow自己编译NaïveProxy的Caddy$none"
     echo "----------------------------------------------------------------"
     cd /tmp
-    bash <( curl -L https://github.com/crazypeace/naive/raw/main/buildcaddy.sh)
+    bash <( curl -L https://github.com/ponyspeed/installnaive/raw/main/buildcaddy.sh)
 else
     error
 fi
@@ -177,10 +176,11 @@ cp caddy /usr/bin/
 
 # xkcd密码生成器页面
 echo
-echo -e "$yellow xkcd密码生成器页面 $none"
+echo -e "$yellow 空白页面 $none"
 echo "----------------------------------------------------------------"
-rm -r /var/www/xkcdpw-html
-git clone https://github.com/crazypeace/xkcd-password-generator -b "master" /var/www/xkcdpw-html --depth=1
+rm -r /var/www/html
+echo "<html></html>" > /var/www/html/index.html
+
 
 # 域名
 if [[ -z $naive_domain ]]; then
@@ -326,9 +326,10 @@ fi
 sed -i "1i # _naive_config_begin_\n\
 {\n\
   order forward_proxy before file_server\n\
+  admin off\n\
 }\n\
 :${naive_port}, ${naive_domain}:${naive_port} {\n\
-  tls e16d9cb045d7@gmail.com\n\
+  tls wsne0wski123@gmail.com\n\
   forward_proxy {\n\
     basic_auth ${naive_user} ${naive_pass}\n\
     hide_ip\n\
@@ -336,7 +337,7 @@ sed -i "1i # _naive_config_begin_\n\
     probe_resistance\n\
   }\n\
   file_server {\n\
-    root /var/www/xkcdpw-html\n\
+    root /var/www/html\n\
   }\n\
 }\n\
 # _naive_config_end_" /etc/caddy/Caddyfile
