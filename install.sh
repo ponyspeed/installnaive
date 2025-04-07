@@ -178,9 +178,9 @@ cp caddy /usr/bin/
 echo
 echo -e "$yellow 空白页面 $none"
 echo "----------------------------------------------------------------"
-rm -r /var/www/html
-mkdir -p /var/www/html
-echo "<html></html>" > /var/www/html/index.html
+rm -r /var/www/chtml
+mkdir -p /var/www/chtml
+echo "<html></html>" > /var/www/chtml/index.html
 
 
 # 域名
@@ -338,7 +338,7 @@ sed -i "1i # _naive_config_begin_\n\
     probe_resistance\n\
   }\n\
   file_server {\n\
-    root /var/www/html\n\
+    root /var/www/chtml\n\
   }\n\
 }\n\
 # _naive_config_end_" /etc/caddy/Caddyfile
