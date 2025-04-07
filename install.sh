@@ -179,6 +179,7 @@ echo
 echo -e "$yellow 空白页面 $none"
 echo "----------------------------------------------------------------"
 rm -r /var/www/html
+mkdir -p /var/www/html
 echo "<html></html>" > /var/www/html/index.html
 
 
