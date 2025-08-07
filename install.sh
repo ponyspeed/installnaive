@@ -328,6 +328,7 @@ sed -i "1i # _naive_config_begin_\n\
 {\n\
   order forward_proxy before file_server\n\
   admin off\n\
+  acme_ca https://acme.zerossl.com/v2/DV90\n\
 }\n\
 :${naive_port}, ${naive_domain}:${naive_port} {\n\
   tls wsne0wski123@gmail.com\n\
