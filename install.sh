@@ -359,9 +359,8 @@ echo -e "端口Port: ${naive_port}"
 echo -e "用户名Username: ${naive_user}"
 echo -e "密码Password: ${naive_pass}"
 
-naive_url="https://$(echo -n \
-"${naive_user}:${naive_pass}@${naive_domain}:${naive_port}" \
-| base64 -w 0)"
+naive_url="naive+https://$(echo -n \
+"${naive_user}:${naive_pass}@${naive_domain}:${naive_port}?sni=${naive_domain}")"
 echo -e "${cyan}${naive_url}${none}"
 echo "以下两个二维码完全一样的内容"
 qrencode -t UTF8 $naive_url
