@@ -314,10 +314,31 @@ if [[ -z $naive_pass ]]; then
     done
 fi
 
+# 邮箱
+tls_email=""
+if [[ -z "$tls_email" ]]; then
+    randomuser=$(openssl rand -hex 8)
+    while :; do
+        echo
+        echo -e "请输入证书邮箱${none} Input your email"
+        read -p "$(echo -e "(默认: ${cyan}${randomuser}@gmail.com$none):") " tls_email
+        [ -z "$tls_email" ] && tls_email="${randomuser}@gmail.com"
+        echo
+        echo
+        echo -e "$yellow 你的邮箱 = $cyan$tls_email$none"
+        echo "----------------------------------------------------------------"
+        break
+    done
+fi
+
 # 修改Caddyfile
 echo
 echo -e "$yellow修改Caddyfile$none"
 echo "----------------------------------------------------------------"
+
+# 先清空Caddyfile
+> /etc/caddy/Caddyfile
+
 begin_line=$(awk "/_naive_config_begin_/{print NR}" /etc/caddy/Caddyfile)
 end_line=$(awk "/_naive_config_end_/{print NR}" /etc/caddy/Caddyfile)
 if [[ -n $begin_line && -n $end_line ]]; then
@@ -331,7 +352,7 @@ sed -i "1i # _naive_config_begin_\n\
   acme_ca https://acme.zerossl.com/v2/DV90\n\
 }\n\
 :${naive_port}, ${naive_domain}:${naive_port} {\n\
-  tls wsne0wski123@gmail.com\n\
+  tls ${$tls_email}\n\
   forward_proxy {\n\
     basic_auth ${naive_user} ${naive_pass}\n\
     hide_ip\n\
