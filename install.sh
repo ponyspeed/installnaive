@@ -336,34 +336,29 @@ echo
 echo -e "$yellow修改Caddyfile$none"
 echo "----------------------------------------------------------------"
 
-# 先清空Caddyfile
-> /etc/caddy/Caddyfile
-sleep 3
-begin_line=$(awk "/_naive_config_begin_/{print NR}" /etc/caddy/Caddyfile)
-end_line=$(awk "/_naive_config_end_/{print NR}" /etc/caddy/Caddyfile)
-if [[ -n $begin_line && -n $end_line ]]; then
-  sed -i "${begin_line},${end_line}d" /etc/caddy/Caddyfile
-fi
+# 写入新的配置
+cat <<EOF > /etc/caddy/Caddyfile
+# _naive_config_begin_
+{
+  order forward_proxy before file_server
+  admin off
+  acme_ca https://acme.zerossl.com/v2/DV90
+}
 
-sed -i "1i # _naive_config_begin_\n\
-{\n\
-  order forward_proxy before file_server\n\
-  admin off\n\
-  acme_ca https://acme.zerossl.com/v2/DV90\n\
-}\n\
-:${naive_port}, ${naive_domain}:${naive_port} {\n\
-  tls ${tls_email}\n\
-  forward_proxy {\n\
-    basic_auth ${naive_user} ${naive_pass}\n\
-    hide_ip\n\
-    hide_via\n\
-    probe_resistance\n\
-  }\n\
-  file_server {\n\
-    root /var/www/chtml\n\
-  }\n\
-}\n\
-# _naive_config_end_" /etc/caddy/Caddyfile
+:${naive_port}, ${naive_domain}:${naive_port} {
+  tls ${tls_email}
+  forward_proxy {
+    basic_auth ${naive_user} ${naive_pass}
+    hide_ip
+    hide_via
+    probe_resistance
+  }
+  file_server {
+    root /var/www/chtml
+  }
+}
+# _naive_config_end_
+EOF
 
 # 启动NaïveProxy服务端(Caddy)
 echo
