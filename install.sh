@@ -321,8 +321,8 @@ if [[ -z "$tls_email" ]]; then
     while :; do
         echo
         echo -e "请输入证书邮箱${none} Input your email"
-        read -p "$(echo -e "(默认: ${cyan}${randomuser}@gmail.com$none):") " tls_email
-        [ -z "$tls_email" ] && tls_email="${randomuser}@gmail.com"
+        read -p "$(echo -e "(默认: ${cyan}n${randomuser}@gmail.com$none):") " tls_email
+        [ -z "$tls_email" ] && tls_email="n${randomuser}@gmail.com"
         echo
         echo
         echo -e "$yellow 你的邮箱 = $cyan$tls_email$none"
@@ -338,7 +338,7 @@ echo "----------------------------------------------------------------"
 
 # 先清空Caddyfile
 > /etc/caddy/Caddyfile
-
+sleep 3
 begin_line=$(awk "/_naive_config_begin_/{print NR}" /etc/caddy/Caddyfile)
 end_line=$(awk "/_naive_config_end_/{print NR}" /etc/caddy/Caddyfile)
 if [[ -n $begin_line && -n $end_line ]]; then
