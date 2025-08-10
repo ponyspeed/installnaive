@@ -352,7 +352,7 @@ sed -i "1i # _naive_config_begin_\n\
   acme_ca https://acme.zerossl.com/v2/DV90\n\
 }\n\
 :${naive_port}, ${naive_domain}:${naive_port} {\n\
-  tls ${$tls_email}\n\
+  tls ${tls_email}\n\
   forward_proxy {\n\
     basic_auth ${naive_user} ${naive_pass}\n\
     hide_ip\n\
