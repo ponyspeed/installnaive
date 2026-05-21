@@ -153,7 +153,7 @@ if [[ "$not_rebuild" == [yY] ]]; then
     cd /tmp
     rm caddy-forwardproxy-naive.tar.xz
     rm -r caddy-forwardproxy-naive
-    wget https://github.com/klzgrad/forwardproxy/releases/download/v2.10.0-naive/caddy-forwardproxy-naive.tar.xz
+    wget https://github.com/klzgrad/forwardproxy/releases/download/v2.11.2-naive/caddy-forwardproxy-naive.tar.xz
     tar -xf caddy-forwardproxy-naive.tar.xz
     cd caddy-forwardproxy-naive
     ./caddy version
@@ -345,7 +345,7 @@ cat <<EOF > /etc/caddy/Caddyfile
   acme_ca https://acme.zerossl.com/v2/DV90
 }
 
-:${naive_port}, ${naive_domain}:${naive_port} {
+:${naive_port}, ${naive_domain} {
   tls ${tls_email}
   forward_proxy {
     basic_auth ${naive_user} ${naive_pass}
@@ -353,9 +353,9 @@ cat <<EOF > /etc/caddy/Caddyfile
     hide_via
     probe_resistance
   }
-  file_server {
-    root /var/www/chtml
-  }
+  
+  root * /var/www/chtml
+  file_server
 }
 # _naive_config_end_
 EOF
